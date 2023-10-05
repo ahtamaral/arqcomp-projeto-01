@@ -108,26 +108,26 @@ sort:
 	
 		# Verifica i >= n - 1
 		bge $t2, $t1, exit_outer_for
-		
+
 		# min_idx = i
 		add $t4, $t2, $zero
+		# j = i + 1
+		addi $t3, $t2, 1
 		
-		# printf("%d%d", i, min_idx)
-		li $v0, 1
-		move $a0, $t2
-		syscall
-		move $a0, $t4
-		syscall
-		
-		#inner_for: # for (j = i + 1; j < n; j++)
-		#	
-		#	bge $t3, $t5, exit_inner_for
-		#	
+		inner_for:
+			bge $t3, $t5, exit_inner_for
 			
-		#	add $t3, $t3, 1
-			#j inner_for		
-			
-		#exit_inner_for:
+			li $v0, 1
+			move $a0, $t2
+			syscall
+			move $a0, $t4
+			syscall
+			move $a0, $t3
+			syscall
+						
+			addi $t3, $t3, 1
+			j inner_for
+		exit_inner_for:
 		
 		addi $t2, $t2, 1
 		j outer_for
