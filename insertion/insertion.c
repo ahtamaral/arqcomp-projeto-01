@@ -12,7 +12,7 @@ void insertionSort(int arr[], int n)
         printf("%d%d%d%d", i,j,key, arr[j]);
 
 
-        while (j >= 0) {
+        while (j >= 0 && arr[j] > key) {
             printf("%d", j);
             j = j - 1;
         }

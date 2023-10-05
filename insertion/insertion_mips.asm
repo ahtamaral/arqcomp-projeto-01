@@ -115,6 +115,7 @@ sort:
 		while_sort:
 			# Verifica (j >= 0)
 			blt $t1, $zero, end_while # se j <= 0
+			ble $s0, $t5, end_while
 			
 			# Print j
 			move $a0, $t1
