@@ -70,16 +70,6 @@ main:
 		
 		jr $ra # endereço de retorno
 
-swap: # função para trocar elementos em a, j, iMin (código citado de http://www-inst.eecs.berkeley.edu/~cs61c/sp13/disc/04/Disc4Soln.pdf)
-	sll $a1, $a1, 2
-     	sll $a2, $a2, 2
-     	addu $a1, $a0, $a1
-     	addu $a2, $a0, $a2
-     	lw $t8, 0($a1)
-     	lw $t9, 0($a2) 	
-     	sw $t8, 0($a2)
-     	sw $t9, 0($a1)
-     	jr $ra
 
 sort:
 	
@@ -128,6 +118,7 @@ sort:
 			add $s1, $s1, $t0
 			lw $t7, 0($s1)
 			
+			# Print para debug
 			li $v0, 1
 			move $a0, $t2
 			syscall
@@ -152,20 +143,16 @@ sort:
 			bne $t4, $t2, then_2
 			j else_2
 			then_2:
-				move $a0, $t4
-				syscall
-				move $a0, $t2
-				syscall
-			
-				# swap(a[min_idx], a[i])
-				#sll $s0, $t2, 2
-				#add $s0, $s0, $t0
-				#lw $t6, 0($s0)
-				
-				#$t6 tem a[j], $t7 tem a[min_idx]
-				#sw $t7, 0($s0)
-				#sw $t6, 0($s1)
-				
+				# swap(a[min_idx], a[i])	
+				sll $s0, $t2, 2	
+				sll $s1, $t4, 2
+				add $s0, $t0, $s0
+				add $s1, $t0, $s1
+				lw $t6, 0($s0) #a[i]
+				lw $t7, 0($s1) #a[min_idx]
+				sw $t6, 0($s1) 
+				sw $t7, 0($s0)
+							
 			else_2:
 			
 			

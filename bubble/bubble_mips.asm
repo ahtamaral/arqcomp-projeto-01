@@ -75,7 +75,7 @@ main:
 		jr $ra # endereço de retorno
 
 swap: # função para trocar elementos em a, j, iMin (código citado de http://www-inst.eecs.berkeley.edu/~cs61c/sp13/disc/04/Disc4Soln.pdf)
-	sll $a1, $a1, 2
+		sll $a1, $a1, 2
      	sll $a2, $a2, 2
      	addu $a1, $a0, $a1
      	addu $a2, $a0, $a2
