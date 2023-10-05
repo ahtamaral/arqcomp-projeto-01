@@ -70,115 +70,69 @@ main:
 		
 		jr $ra # endereço de retorno
 
+swap: # função para trocar elementos em a, j, iMin (código citado de http://www-inst.eecs.berkeley.edu/~cs61c/sp13/disc/04/Disc4Soln.pdf)
+	sll $a1, $a1, 2
+     	sll $a2, $a2, 2
+     	addu $a1, $a0, $a1
+     	addu $a2, $a0, $a2
+     	lw $t8, 0($a1)
+     	lw $t9, 0($a2) 	
+     	sw $t8, 0($a2)
+     	sw $t9, 0($a1)
+     	jr $ra
+
 sort:
 	
 	# $t0 -> endereço do array a 
 	# $t1 -> n-1 (último índice de a)
 	# $t2 -> i
 	# $t3 -> j
-	# $t4 -> key
+	# $t4 -> min_idx
+	# $t5 -> n
 	
-	# $t5 -> tmp
-	# $t6 -> a[j]
+	# $t6 -> 
 	# $t7 ->
 	
 	# Carrega variáveis declaradas na seção .data nos registradores $t0 e $t1.
 	add $t0, $a0, $zero
 	add $t1, $a1, $zero
-	subi $t1, $t1, 1 # n--;
+	subi $t1, $t1, 1 # n = n - 1;
+	add $t5, $a1, $zero
+	#subi $t5, $t1, 2 # n = n - 2;
 	
-	# i = 1
-	addi $t2, $zero, 1
+	# i = 0; j = 0;
+	addi $t2, $zero, 0
 	addi $t3, $zero, 0
 	
-	for: # for (int i = 0; i < n; i++)
-
-		bgt $t2, $t1, exit_for
-
-		# key = arr[i];
-		sll $t5, $t2, 2 
-		add $t5, $t5, $t0
-		lw $t4, 0($t5)
-		
-		# j = i - 1
-		subi $t3, $t2, 1
+	outer_for: # for (i = 0; i < n - 1; i++) {
 	
-		while_sort:
-
-			# Verifica j < 0
-			blt $t3, $zero, exit_while_sort
+		# Verifica i >= n - 1
+		bge $t2, $t1, exit_outer_for
 		
-			# Carrega a[j] em $t6
-			sll $t5, $t3, 2
-			add $t5, $t5, $t0
-			lw $t6, 0($t5)
-			
-			# Verifica a[j] > key
-			ble $t6, $t4, exit_while_sort
+		# min_idx = i
+		add $t4, $t2, $zero
 		
-		
-			# printf("%d%d%d", i,j,key);
-			li $v0, 1
-			move $a0, $t2
-			syscall
-			move $a0, $t3
-			syscall
-       			move $a0, $t4
-			syscall
-			move $a0, $t6
-			syscall
-			
-			# ------------
-			# arr[j + 1] = arr[j];
-			# Sei quem é a a[j]. Já foi carregado. Quero apenas dar um store em a[j+1]
-			
-			# $t5 recebe j + 1
-			addi $t5, $t3, 1
-			
-			# save word a[j] em a[j+1]
-			sll $t7, $t5, 2
-			add $t7, $t7, $t0
-			sw $t6, 0($t7)
-			lw $t5, 0($t7)
-			
-			move $a0, $t5
-			syscall
-			
-			# ------------			
-			
-			# j--;
-			subi $t3, $t3, 1
-			
-			j while_sort
-			
-		exit_while_sort:
-		
-		# --------
-		# arr[j + 1] = key;
-		addi $t5, $t3, 1
-		sll $t7, $t5, 2
-		add $t7, $t7, $t0
-		sw $t4, 0($t7)
-		lw $t5, 0($t7)
-		
-		move $a0, $t5
+		# printf("%d%d", i, min_idx)
+		li $v0, 1
+		move $a0, $t2
 		syscall
-		# --------
-	
-		# i++ }
-		addi $t2, $t2, 1
-		j for
-	
-	exit_for:
+		move $a0, $t4
+		syscall
+		
+		#inner_for: # for (j = i + 1; j < n; j++)
+		#	
+		#	bge $t3, $t5, exit_inner_for
+		#	
 			
+		#	add $t3, $t3, 1
+			#j inner_for		
+			
+		#exit_inner_for:
+		
+		addi $t2, $t2, 1
+		j outer_for
+	
+	exit_outer_for:
 	
 end_sort:
 	jr $ra
-	
-
-
-
-
-
-
-

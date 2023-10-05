@@ -72,95 +72,104 @@ main:
 
 sort:
 	
-	# $t0 -> i 
-	# $t1 -> j
-	# $t2 -> n
-	# $t3 -> & a
-	# $t5 -> key
+	# $t0 -> endereço do array a 
+	# $t1 -> n-1 (último índice de a)
+	# $t2 -> i
+	# $t3 -> j
+	# $t4 -> key
 	
-	addi $t0, $zero, 1 # i = 1
-	subi $t2, $a1, 1 # $t2 --> (n - 1) Fim do for
-	addi $t3, $a0, 0 # $ t3 --> endereço de int[] a
+	# $t5 -> tmp
+	# $t6 -> a[j]
+	# $t7 ->
+	
+	# Carrega variáveis declaradas na seção .data nos registradores $t0 e $t1.
+	add $t0, $a0, $zero
+	add $t1, $a1, $zero
+	subi $t1, $t1, 1 # n--;
+	
+	# i = 1
+	addi $t2, $zero, 1
+	addi $t3, $zero, 0
 	
 	for: # for (int i = 0; i < n; i++)
-		bgt $t0, $t2, exit_for # Se i >= n, encerra for
 
-		# j = i - 1	
-		add $t1, $zero, $t0 	# j = 0 + i
-		subi $t1, $t1, 1 	# j = j -1
+		bgt $t2, $t1, exit_for
+
+		# key = arr[i];
+		sll $t5, $t2, 2 
+		add $t5, $t5, $t0
+		lw $t4, 0($t5)
 		
-		# key = a[i]; ($t5 recebe a[i])
-		sll $t4, $t0, 2
-		add $t4, $t4, $t3
-		lw $t5, 0($t4)
-		
-		li $v0, 1
-		move $a0, $t0
-		syscall
-		move $a0, $t1
-		syscall
-        	move $a0, $t5
-		syscall	
-		
-		# key -> $t5
-		# a[j] -> $s0
-		sll $s7, $t1, 2
-		add $s7, $s7, $t3
-		lw $s0, 0($s7)
-		
-		move $a0, $s0
-		syscall	
-		
-		# while (j >= 0 && arr[j] > key) 
+		# j = i - 1
+		subi $t3, $t2, 1
+	
 		while_sort:
-			# Verifica (j >= 0)
-			blt $t1, $zero, end_while # se j <= 0
-			ble $s0, $t5, end_while
+
+			# Verifica j < 0
+			blt $t3, $zero, exit_while_sort
+		
+			# Carrega a[j] em $t6
+			sll $t5, $t3, 2
+			add $t5, $t5, $t0
+			lw $t6, 0($t5)
 			
-			# Print j
-			move $a0, $t1
-			syscall
-			
-			# TODO: arr[j + 1] = arr[j];
-			# $s0
-			
-			# s6 é j+1
-			addi $s6, $t1, 1
-			# a[j+1] <-> $s0
-			sll $s5, $s6, 2
-			add $s5, $s5, $t3
-			lw $s1, 0($s5)
-			
-			# Print a[j+1]
-			move $a0, $s1
-			syscall
-			
-			#lw $s1, 0($s0)
-			# Print a[j+1]
-			#move $a0, $s1
+			# Verifica a[j] > key
+			ble $t6, $t4, exit_while_sort
+		
+			# printf("%d%d%d", i,j,key); (Para debug)
+			#li $v0, 1
+			#move $a0, $t2
+			#syscall
+			#move $a0, $t3
+			#syscall
+       			#move $a0, $t4
+			#syscall
+			#move $a0, $t6
 			#syscall
 			
+			# ------------
+			# arr[j + 1] = arr[j];
+			# Sei quem é a a[j]. Já foi carregado. Quero apenas dar um store em a[j+1]
 			
-			subi $t1, $t1, 1 # j--;
+			# $t5 recebe j + 1
+			addi $t5, $t3, 1
+			
+			# save word a[j] em a[j+1]
+			sll $t7, $t5, 2
+			add $t7, $t7, $t0
+			sw $t6, 0($t7)
+			lw $t5, 0($t7)
+			
+			#move $a0, $t5
+			#syscall
+			
+			# ------------			
+			
+			# j--;
+			subi $t3, $t3, 1
 			
 			j while_sort
 			
-		end_while:
+		exit_while_sort:
 		
-		# TODO: arr[j + 1] = key;
+		# --------
+		# arr[j + 1] = key;
+		addi $t5, $t3, 1
+		sll $t7, $t5, 2
+		add $t7, $t7, $t0
+		sw $t4, 0($t7)
+		lw $t5, 0($t7)
 		
-		add $t0, $t0, 1 # i++
+		#move $a0, $t5
+		#syscall
+		# --------
+	
+		# i++ }
+		addi $t2, $t2, 1
 		j for
-		
+	
 	exit_for:
+			
 	
 end_sort:
 	jr $ra
-	
-
-
-
-
-
-
-
