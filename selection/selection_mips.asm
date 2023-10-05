@@ -116,6 +116,17 @@ sort:
 		
 		inner_for:
 			bge $t3, $t5, exit_inner_for
+						
+			# Aqui, $t6 recebe a[j]
+			# e $t7 recebe a[min_idx]
+			
+			sll $s0, $t3, 2
+			add $s0, $s0, $t0
+			lw $t6, 0($s0)
+
+			sll $s1, $t4, 2
+			add $s1, $s1, $t0
+			lw $t7, 0($s1)
 			
 			li $v0, 1
 			move $a0, $t2
@@ -123,6 +134,10 @@ sort:
 			move $a0, $t4
 			syscall
 			move $a0, $t3
+			syscall
+			move $a0, $t6
+			syscall
+			move $a0, $t7
 			syscall
 						
 			addi $t3, $t3, 1

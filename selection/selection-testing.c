@@ -21,7 +21,7 @@ void selectionSort(int arr[], int n)
         
         for (j = i+1; j < n; j++) 
         {
-            printf("%d%d%d", i, min_idx, j);
+            printf("%d%d%d%d%d", i, min_idx, j, arr[j], arr[min_idx]);
         }
     }
 }
