@@ -109,7 +109,6 @@ sort:
 						
 			# Aqui, $t6 recebe a[j]
 			# e $t7 recebe a[min_idx]
-			
 			sll $s0, $t3, 2
 			add $s0, $s0, $t0
 			lw $t6, 0($s0)
@@ -119,17 +118,17 @@ sort:
 			lw $t7, 0($s1)
 			
 			# Print para debug
-			li $v0, 1
-			move $a0, $t2
-			syscall
-			move $a0, $t4
-			syscall
-			move $a0, $t3
-			syscall
-			move $a0, $t6
-			syscall
-			move $a0, $t7
-			syscall
+			#li $v0, 1
+			#move $a0, $t2
+			#syscall
+			#move $a0, $t4
+			#syscall
+			#move $a0, $t3
+			#syscall
+			#move $a0, $t6
+			#syscall
+			#move $a0, $t7
+			#syscall
 			
 			# if (arr[j] < arr[min_idx])
 			blt $t6, $t7, then_1
