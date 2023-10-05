@@ -139,6 +139,31 @@ sort:
 			syscall
 			move $a0, $t7
 			syscall
+			
+			# if (arr[j] < arr[min_idx])
+			blt $t6, $t7, then_1
+			j else_1
+			then_1:
+				# min_idx = j
+				add $t4, $t3, $zero
+			else_1:
+			
+			# if min_idx != i
+			#bne $t4, $t2, then_2
+			#j else_2
+			#then_2:
+				# swap(a[min_idx], a[i])
+				#sll $s0, $t2, 2
+				#add $s0, $s0, $t0
+				#lw $t6, 0($s0)
+				
+				#$t6 tem a[j], $t7 tem a[min_idx]
+				#sw $t7, 0($s0)
+				#sw $t6, 0($s1)
+				
+			#else_2:
+			
+			
 						
 			addi $t3, $t3, 1
 			j inner_for
