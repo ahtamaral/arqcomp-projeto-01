@@ -155,6 +155,7 @@ sort:
 		
 		# --------
 		# arr[j + 1] = key;
+		addi $t5, $t3, 1
 		sll $t7, $t5, 2
 		add $t7, $t7, $t0
 		sw $t4, 0($t7)
