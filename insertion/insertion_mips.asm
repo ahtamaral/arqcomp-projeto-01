@@ -86,32 +86,56 @@ sort:
 	subi $t2, $a1, 1 # $t2 --> (n - 1) Fim do for
 	addi $t3, $a0, 0 # $ t3 --> endereço de int[] a
 	
-	for:
-		bgt $t0, $t2, exit_for # for (int i = 0; i < n; i++)
+	for: # for (int i = 0; i < n; i++)
+		bgt $t0, $t2, exit_for # Se i >= n, encerra for
 
 		# j = i - 1	
 		add $t1, $zero, $t0 	# j = 0 + i
-		subi $t1, $t1, 1 	# j = j -1 -> ou seja, j = i - 1
+		subi $t1, $t1, 1 	# j = j -1
 		
-		# $t5 recebe a[i]
-		sll $t4, $t1, 2
+		# key = a[i]; ($t5 recebe a[i])
+		sll $t4, $t0, 2
 		add $t4, $t4, $t3
 		lw $t5, 0($t4)
 		
-		# print a[i]
 		li $v0, 1
-		move $a0, $t5
+		move $a0, $t0
 		syscall
+		move $a0, $t1
+		syscall
+        	move $a0, $t5
+		syscall	
 		
-		# ---
-		# Debug índices (i, j)
-		#li $v0, 1
-		#move $a0, $t0
-		#syscall
-		#move $a0, $t1
-		#syscall		
-		# ---
+		# while (j >= 0 && arr[j] > key) 
+		#while_sort:
+			# Verifica (j >= 0)
+			#blt $t1, $zero, end_while # se j <= 0
+			
+			# Verifica (arr[j] > key)
+			# $t6 recebe a[j]
+			#sll $t4, $t1, 2
+			#add $t4, $t4, $t3
+			#lw $t6, 0($t4)
+			
+			# print a[j]
+			#li $v0, 1
+			#move $a0, $t6
+			#syscall
+			
+			#ble $t5, $t6, end_while # Se key >= a[j]
+			
+			#li $v0, 1
+			#move $a0, $t1
+			#syscall
+			
+			# TODO: arr[j + 1] = arr[j];
+			#subi $t1, $t1, 1 # j--;
+			
+			#j while_sort
+			
+		#end_while:
 		
+		# TODO: arr[j + 1] = key;
 		
 		add $t0, $t0, 1 # i++
 		j for
