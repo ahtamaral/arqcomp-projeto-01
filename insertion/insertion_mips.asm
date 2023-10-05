@@ -78,10 +78,6 @@ sort:
 	# $t3 -> & a
 	# $t5 -> key
 	
-	#
-	# for (int i = 0; i < n; i++) {
-	#}
-	
 	addi $t0, $zero, 1 # i = 1
 	subi $t2, $a1, 1 # $t2 --> (n - 1) Fim do for
 	addi $t3, $a0, 0 # $ t3 --> endereço de int[] a
@@ -107,33 +103,20 @@ sort:
 		syscall	
 		
 		# while (j >= 0 && arr[j] > key) 
-		#while_sort:
+		while_sort:
 			# Verifica (j >= 0)
-			#blt $t1, $zero, end_while # se j <= 0
+			blt $t1, $zero, end_while # se j <= 0
 			
-			# Verifica (arr[j] > key)
-			# $t6 recebe a[j]
-			#sll $t4, $t1, 2
-			#add $t4, $t4, $t3
-			#lw $t6, 0($t4)
-			
-			# print a[j]
-			#li $v0, 1
-			#move $a0, $t6
-			#syscall
-			
-			#ble $t5, $t6, end_while # Se key >= a[j]
-			
-			#li $v0, 1
-			#move $a0, $t1
-			#syscall
+			# Print j
+			move $a0, $t1
+			syscall
 			
 			# TODO: arr[j + 1] = arr[j];
-			#subi $t1, $t1, 1 # j--;
+			subi $t1, $t1, 1 # j--;
 			
-			#j while_sort
+			j while_sort
 			
-		#end_while:
+		end_while:
 		
 		# TODO: arr[j + 1] = key;
 		

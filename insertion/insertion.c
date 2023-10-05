@@ -11,13 +11,11 @@ void insertionSort(int arr[], int n)
     
         printf("%d%d%d", i,j,key);
 
-        /* Move elements of arr[0..i-1], that are
-          greater than key, to one position ahead
-          of their current position */
-        // while (j >= 0 && arr[j] > key) {
-        //     // printf("%d", j);
-        //     j = j - 1;
-        // }
+
+        while (j >= 0) {
+            printf("%d", j);
+            j = j - 1;
+        }
     }
 }
 
