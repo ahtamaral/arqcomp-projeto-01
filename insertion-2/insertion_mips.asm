@@ -128,12 +128,41 @@ sort:
 			move $a0, $t6
 			syscall
 			
+			# ------------
+			# arr[j + 1] = arr[j];
+			# Sei quem é a a[j]. Já foi carregado. Quero apenas dar um store em a[j+1]
+			
+			# $t5 recebe j + 1
+			addi $t5, $t3, 1
+			
+			# save word a[j] em a[j+1]
+			sll $t7, $t5, 2
+			add $t7, $t7, $t0
+			sw $t6, 0($t7)
+			lw $t5, 0($t7)
+			
+			move $a0, $t5
+			syscall
+			
+			# ------------			
+			
 			# j--;
 			subi $t3, $t3, 1
 			
 			j while_sort
 			
 		exit_while_sort:
+		
+		# --------
+		# arr[j + 1] = key;
+		sll $t7, $t5, 2
+		add $t7, $t7, $t0
+		sw $t4, 0($t7)
+		lw $t5, 0($t7)
+		
+		move $a0, $t5
+		syscall
+		# --------
 	
 		# i++ }
 		addi $t2, $t2, 1
