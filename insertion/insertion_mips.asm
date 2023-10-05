@@ -122,6 +122,25 @@ sort:
 			syscall
 			
 			# TODO: arr[j + 1] = arr[j];
+			# $s0
+			
+			# s6 é j+1
+			addi $s6, $t1, 1
+			# a[j+1] <-> $s0
+			sll $s5, $s6, 2
+			add $s5, $s5, $t3
+			lw $s1, 0($s5)
+			
+			# Print a[j+1]
+			move $a0, $s1
+			syscall
+			
+			#lw $s1, 0($s0)
+			# Print a[j+1]
+			#move $a0, $s1
+			#syscall
+			
+			
 			subi $t1, $t1, 1 # j--;
 			
 			j while_sort
