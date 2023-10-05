@@ -9,7 +9,7 @@ void insertionSort(int arr[], int n)
         key = arr[i];
         j = i - 1;
     
-        printf("%d%d%d", i,j,key);
+        printf("%d%d%d%d", i,j,key, arr[j]);
 
 
         while (j >= 0) {

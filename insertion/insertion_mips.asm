@@ -102,6 +102,15 @@ sort:
         	move $a0, $t5
 		syscall	
 		
+		# key -> $t5
+		# a[j] -> $s0
+		sll $s7, $t1, 2
+		add $s7, $s7, $t3
+		lw $s0, 0($s7)
+		
+		move $a0, $s0
+		syscall	
+		
 		# while (j >= 0 && arr[j] > key) 
 		while_sort:
 			# Verifica (j >= 0)
