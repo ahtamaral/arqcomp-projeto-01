@@ -25,7 +25,8 @@ void selectionSort(int arr[], int n)
             if (arr[j] < arr[min_idx])
                 min_idx = j;
 
-            // if(min_idx != i)
+            if(min_idx != i)
+                printf("%d%d", min_idx, i);
             //     swap(&arr[min_idx], &arr[i]);
 
         }

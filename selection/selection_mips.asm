@@ -149,9 +149,14 @@ sort:
 			else_1:
 			
 			# if min_idx != i
-			#bne $t4, $t2, then_2
-			#j else_2
-			#then_2:
+			bne $t4, $t2, then_2
+			j else_2
+			then_2:
+				move $a0, $t4
+				syscall
+				move $a0, $t2
+				syscall
+			
 				# swap(a[min_idx], a[i])
 				#sll $s0, $t2, 2
 				#add $s0, $s0, $t0
@@ -161,7 +166,7 @@ sort:
 				#sw $t7, 0($s0)
 				#sw $t6, 0($s1)
 				
-			#else_2:
+			else_2:
 			
 			
 						
